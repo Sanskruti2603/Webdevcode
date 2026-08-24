@@ -1,0 +1,2321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DigiVault — Smart Government Portal</title>
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        /* =========================
+           GLOBAL
+        ========================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg: #f4f7fb;
+            --card: #ffffff;
+            --text: #172033;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --sidebar: #ffffff;
+            --success: #16a34a;
+            --warning: #f59e0b;
+        }
+
+        body.dark {
+            --bg: #0f172a;
+            --card: #172033;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --border: #263449;
+            --sidebar: #111827;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 250px;
+            background: var(--sidebar);
+            border-right: 1px solid var(--border);
+            padding: 25px 16px;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 5px 10px 28px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .logo h2 {
+            font-size: 20px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .menu-title {
+            font-size: 10px;
+            color: #94a3b8;
+            font-weight: 700;
+            margin: 20px 10px 10px;
+            letter-spacing: 1px;
+        }
+
+        .nav-btn {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            padding: 13px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 13px;
+            margin-bottom: 5px;
+            text-align: left;
+            transition: 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary);
+            transform: translateX(3px);
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            height: 75px;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .search {
+            width: 360px;
+            height: 43px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 0 13px;
+            background: var(--bg);
+        }
+
+        .search i {
+            color: #94a3b8;
+        }
+
+        .search input {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 13px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        .icon-btn:hover {
+            color: var(--primary);
+        }
+
+        .notification-dot {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            background: #ef4444;
+            border-radius: 50%;
+            top: 8px;
+            right: 8px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 39px;
+            height: 39px;
+            background: linear-gradient(135deg, #dbeafe, #ede9fe);
+            color: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .profile strong {
+            font-size: 12px;
+        }
+
+        .profile p {
+            font-size: 9px;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            padding: 35px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .heading {
+            margin-bottom: 25px;
+        }
+
+        .heading small {
+            color: var(--primary);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+        }
+
+        .heading h1 {
+            font-size: 30px;
+            margin: 7px 0;
+        }
+
+        .heading p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* =========================
+           WELCOME
+        ========================= */
+
+        .welcome {
+            background: linear-gradient(120deg, #172554, #2563eb, #4f46e5);
+            color: white;
+            padding: 30px;
+            border-radius: 18px;
+            margin-bottom: 22px;
+        }
+
+        .welcome h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            font-size: 12px;
+            opacity: 0.85;
+        }
+
+        .welcome-badge {
+            display: inline-block;
+            margin-top: 15px;
+            background: rgba(255,255,255,0.15);
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-size: 9px;
+        }
+
+        /* =========================
+           QUICK ACTIONS
+        ========================= */
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .quick {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 17px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .quick:hover {
+            transform: translateY(-4px);
+        }
+
+        .quick-icon,
+        .stat-icon,
+        .card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: #eff6ff;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .quick h3 {
+            font-size: 12px;
+        }
+
+        .quick p {
+            font-size: 9px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .stat {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .stat h2 {
+            font-size: 24px;
+        }
+
+        .stat p {
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        /* =========================
+           SECURITY
+        ========================= */
+
+        .security {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 22px;
+        }
+
+        .security-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .security-header h3 {
+            font-size: 14px;
+        }
+
+        .security-score {
+            color: var(--success);
+            font-weight: 800;
+        }
+
+        .progress {
+            height: 9px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 92%;
+            height: 100%;
+            background: linear-gradient(90deg, #16a34a, #22c55e);
+        }
+
+        /* =========================
+           CARDS
+        ========================= */
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .card h3 {
+            font-size: 13px;
+        }
+
+        .card p {
+            font-size: 10px;
+            color: var(--muted);
+            margin: 7px 0 13px;
+        }
+
+        .verified {
+            display: inline-block;
+            background: #ecfdf3;
+            color: #16a34a;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 9px;
+            font-weight: 600;
+        }
+
+        /* =========================
+           ACTIVITY
+        ========================= */
+
+        .activity {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            margin-top: 22px;
+        }
+
+        .activity h2 {
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #eff6ff;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .activity h4 {
+            font-size: 10px;
+        }
+
+        .activity p {
+            font-size: 9px;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .verify-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 20px;
+        }
+
+        .verify-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .verify-box h2 {
+            font-size: 18px;
+            margin-bottom: 7px;
+        }
+
+        .verify-box > p {
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            margin: 14px 0 7px;
+        }
+
+        select,
+        input {
+            width: 100%;
+            height: 43px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 0 12px;
+            outline: none;
+            font-family: inherit;
+            font-size: 11px;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .primary-btn {
+            border: none;
+            background: var(--primary);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .verify-button {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        #result {
+            margin-top: 15px;
+            padding: 13px;
+            border-radius: 9px;
+            font-size: 10px;
+            display: none;
+        }
+
+        .success {
+            display: block !important;
+            background: #ecfdf3;
+            color: #15803d;
+        }
+
+        .error {
+            display: block !important;
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        /* =========================
+           SERVICES
+        ========================= */
+
+        .service-search {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0 14px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .service-search input {
+            border: none;
+            background: transparent;
+        }
+
+        .service-filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter {
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 9px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        .filter.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .service-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .service-card i {
+            font-size: 22px;
+            color: var(--primary);
+            margin-bottom: 14px;
+        }
+
+        .service-card h3 {
+            font-size: 13px;
+        }
+
+        .service-card p {
+            font-size: 9px;
+            color: var(--muted);
+            margin: 6px 0 15px;
+        }
+
+        .service-card button {
+            width: 100%;
+            border: none;
+            background: #eff6ff;
+            color: var(--primary);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           SUPPORT
+        ========================= */
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .support-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .support-card i {
+            font-size: 22px;
+            color: var(--primary);
+            margin-bottom: 14px;
+        }
+
+        .support-card h3 {
+            font-size: 12px;
+        }
+
+        .support-card p {
+            color: var(--muted);
+            font-size: 9px;
+            line-height: 1.5;
+            margin: 7px 0;
+        }
+
+        .support-card button {
+            border: none;
+            background: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           FAQ
+        ========================= */
+
+        .faq {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            margin-top: 22px;
+        }
+
+        .faq h2 {
+            padding: 20px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-question {
+            width: 100%;
+            background: transparent;
+            color: var(--text);
+            border: none;
+            padding: 17px 20px;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 0 20px 17px;
+            color: var(--muted);
+            font-size: 9px;
+            line-height: 1.6;
+        }
+
+        .faq-item.open .faq-answer {
+            display: block;
+        }
+
+        /* =========================
+           AI ASSISTANT
+        ========================= */
+
+        .ai-button {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            width: 55px;
+            height: 55px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 90;
+        }
+
+        .ai-panel {
+            position: fixed;
+            right: 25px;
+            bottom: 90px;
+            width: 300px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,.18);
+            display: none;
+            z-index: 100;
+        }
+
+        .ai-panel.show {
+            display: block;
+        }
+
+        .ai-panel h3 {
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .ai-panel p {
+            font-size: 9px;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+
+        .ai-option {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            border-radius: 8px;
+            margin-top: 7px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 9px;
+        }
+
+        /* =========================
+           TOAST
+        ========================= */
+
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: #172033;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 10px;
+            display: none;
+            z-index: 999;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+            .stats,
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .service-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .support-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                width: 75px;
+            }
+
+            .logo h2,
+            .nav-btn span,
+            .menu-title {
+                display: none;
+            }
+
+            .nav-btn {
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 75px;
+            }
+
+            .verify-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 0 15px;
+            }
+
+            .search {
+                width: 200px;
+            }
+
+            .profile div:last-child {
+                display: none;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .stats,
+            .quick-actions,
+            .service-grid,
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .heading h1 {
+                font-size: 25px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fa-solid fa-folder-open"></i>
+            </div>
+
+            <h2>Digi<span>Vault</span></h2>
+        </div>
+
+        <div class="menu-title">MAIN MENU</div>
+
+        <button class="nav-btn active"
+            onclick="showPage('dashboard', this)">
+            <i class="fa-solid fa-house"></i>
+            <span>Dashboard</span>
+        </button>
+
+        <button class="nav-btn"
+            onclick="showPage('documents', this)">
+            <i class="fa-solid fa-folder"></i>
+            <span>My Documents</span>
+        </button>
+
+        <div class="menu-title">SERVICES</div>
+
+        <button class="nav-btn"
+            onclick="showPage('verify', this)">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Verify Document</span>
+        </button>
+
+        <button class="nav-btn"
+            onclick="showPage('services', this)">
+            <i class="fa-solid fa-building-columns"></i>
+            <span>Government Services</span>
+        </button>
+
+        <div class="menu-title">SUPPORT</div>
+
+        <button class="nav-btn"
+            onclick="showPage('support', this)">
+            <i class="fa-solid fa-circle-question"></i>
+            <span>Help & Support</span>
+        </button>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <header class="header">
+
+            <div class="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    placeholder="Search documents, services..."
+                >
+            </div>
+
+            <div class="header-actions">
+
+                <button
+                    class="icon-btn"
+                    onclick="toggleTheme()"
+                    title="Change theme">
+
+                    <i
+                        id="themeIcon"
+                        class="fa-solid fa-moon">
+                    </i>
+
+                </button>
+
+                <button
+                    class="icon-btn"
+                    onclick="showToast('You have 3 new notifications')">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    <span class="notification-dot"></span>
+
+                </button>
+
+                <div class="profile">
+
+                    <div class="avatar">
+                        SD
+                    </div>
+
+                    <div>
+                        <strong>Sanskruti Dhavale</strong>
+
+                        <p>✓ Verified User</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <div class="content">
+
+
+            <!-- DASHBOARD -->
+
+            <section
+                id="dashboard"
+                class="page active">
+
+                <div class="heading">
+
+                    <small>PERSONAL DASHBOARD</small>
+
+                    <h1>
+                        Good evening, Sanskruti 👋
+                    </h1>
+
+                    <p>
+                        Your digital identity, documents and government services — simplified.
+                    </p>
+
+                </div>
+
+
+                <div class="welcome">
+
+                    <h2>
+                        Everything important. One secure place.
+                    </h2>
+
+                    <p>
+                        DigiVault makes accessing your government documents faster, safer and simpler.
+                    </p>
+
+                    <span class="welcome-badge">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Your account is secure
+                    </span>
+
+                </div>
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="quick-actions">
+
+                    <div
+                        class="quick"
+                        onclick="showPage('verify')">
+
+                        <div class="quick-icon">
+                            <i class="fa-solid fa-qrcode"></i>
+                        </div>
+
+                        <h3>Verify Document</h3>
+
+                        <p>Instant authenticity check</p>
+
+                    </div>
+
+
+                    <div
+                        class="quick"
+                        onclick="showPage('documents')">
+
+                        <div class="quick-icon">
+                            <i class="fa-solid fa-download"></i>
+                        </div>
+
+                        <h3>View Documents</h3>
+
+                        <p>Access your digital records</p>
+
+                    </div>
+
+
+                    <div
+                        class="quick"
+                        onclick="showPage('services')">
+
+                        <div class="quick-icon">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+
+                        <h3>Quick Services</h3>
+
+                        <p>Popular government services</p>
+
+                    </div>
+
+
+                    <div
+                        class="quick"
+                        onclick="showToast('Share feature ready!')">
+
+                        <div class="quick-icon">
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </div>
+
+                        <h3>Share Document</h3>
+
+                        <p>Securely share with anyone</p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATS -->
+
+                <div class="stats">
+
+                    <div class="stat">
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-file"></i>
+                        </div>
+
+                        <h2>08</h2>
+                        <p>Total Documents</p>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+
+                        <h2>08</h2>
+                        <p>Verified Documents</p>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-building-columns"></i>
+                        </div>
+
+                        <h2>05</h2>
+                        <p>Issuers Connected</p>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </div>
+
+                        <h2>12</h2>
+                        <p>Documents Shared</p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SECURITY -->
+
+                <div class="security">
+
+                    <div class="security-header">
+
+                        <h3>
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Account Security
+                        </h3>
+
+                        <span class="security-score">
+                            92% Secure
+                        </span>
+
+                    </div>
+
+                    <div class="progress">
+                        <div class="progress-bar"></div>
+                    </div>
+
+                    <p style="font-size:9px;color:var(--muted);margin-top:9px;">
+                        Your account security is excellent. Enable two-factor authentication for maximum protection.
+                    </p>
+
+                </div>
+
+
+                <!-- DOCUMENTS -->
+
+                <div class="grid">
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            <i class="fa-solid fa-id-card"></i>
+                        </div>
+
+                        <h3>Aadhaar Card</h3>
+
+                        <p>UIDAI • Updated today</p>
+
+                        <span class="verified">
+                            ✓ Verified
+                        </span>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+
+                        <h3>Class XII Marksheet</h3>
+
+                        <p>Education Board • 2026</p>
+
+                        <span class="verified">
+                            ✓ Verified
+                        </span>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            <i class="fa-solid fa-car"></i>
+                        </div>
+
+                        <h3>Driving Licence</h3>
+
+                        <p>Parivahan</p>
+
+                        <span class="verified">
+                            ✓ Verified
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIVITY -->
+
+                <div class="activity">
+
+                    <h2>Recent Activity</h2>
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <div>
+                            <h4>Aadhaar verified</h4>
+                            <p>Today • 6:42 PM</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon">
+                            <i class="fa-solid fa-share"></i>
+                        </div>
+
+                        <div>
+                            <h4>Driving Licence shared</h4>
+                            <p>Yesterday • 4:20 PM</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon">
+                            <i class="fa-solid fa-download"></i>
+                        </div>
+
+                        <div>
+                            <h4>Class XII Marksheet downloaded</h4>
+                            <p>20 August • 11:30 AM</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- DOCUMENTS -->
+
+            <section id="documents" class="page">
+
+                <div class="heading">
+
+                    <small>YOUR DIGITAL VAULT</small>
+
+                    <h1>My Documents</h1>
+
+                    <p>
+                        All your important government documents in one place.
+                    </p>
+
+                </div>
+
+
+                <div class="grid">
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            <i class="fa-solid fa-id-card"></i>
+                        </div>
+
+                        <h3>Aadhaar Card</h3>
+
+                        <p>UIDAI • Updated today</p>
+
+                        <span class="verified">✓ Verified</span>
+
+                        <br><br>
+
+                        <button
+                            class="primary-btn"
+                            onclick="showToast('Aadhaar document downloaded')">
+
+                            <i class="fa-solid fa-download"></i>
+                            Download
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            <i class="fa-solid fa-credit-card"></i>
+                        </div>
+
+                        <h3>PAN Card</h3>
+
+                        <p>Income Tax Department</p>
+
+                        <span class="verified">✓ Verified</span>
+
+                        <br><br>
+
+                        <button
+                            class="primary-btn"
+                            onclick="showToast('PAN document downloaded')">
+
+                            <i class="fa-solid fa-download"></i>
+                            Download
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            <i class="fa-solid fa-car"></i>
+                        </div>
+
+                        <h3>Driving Licence</h3>
+
+                        <p>Parivahan</p>
+
+                        <span class="verified">✓ Verified</span>
+
+                        <br><br>
+
+                        <button
+                            class="primary-btn"
+                            onclick="showToast('Driving Licence downloaded')">
+
+                            <i class="fa-solid fa-download"></i>
+                            Download
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+
+                        <h3>Class XII Marksheet</h3>
+
+                        <p>Education Board</p>
+
+                        <span class="verified">✓ Verified</span>
+
+                        <br><br>
+
+                        <button
+                            class="primary-btn"
+                            onclick="showToast('Marksheet downloaded')">
+
+                            <i class="fa-solid fa-download"></i>
+                            Download
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- VERIFY -->
+
+            <section id="verify" class="page">
+
+                <div class="heading">
+
+                    <small>TRUST & AUTHENTICITY</small>
+
+                    <h1>Verify Document</h1>
+
+                    <p>
+                        Instantly check whether a digital government document is authentic.
+                    </p>
+
+                </div>
+
+
+                <div class="verify-layout">
+
+                    <div class="verify-box">
+
+                        <h2>Verify a Document 🛡️</h2>
+
+                        <p>
+                            Enter the document information below.
+                        </p>
+
+                        <label>Document Type</label>
+
+                        <select id="documentType">
+
+                            <option value="">
+                                Select document
+                            </option>
+
+                            <option>Aadhaar Card</option>
+                            <option>PAN Card</option>
+                            <option>Driving Licence</option>
+                            <option>Class XII Marksheet</option>
+
+                        </select>
+
+
+                        <label>Document Number</label>
+
+                        <input
+                            id="documentNumber"
+                            placeholder="Enter document number"
+                        >
+
+
+                        <label>Issuer</label>
+
+                        <select id="issuer">
+
+                            <option value="">
+                                Select issuer
+                            </option>
+
+                            <option>UIDAI</option>
+                            <option>Income Tax Department</option>
+                            <option>Parivahan</option>
+                            <option>Education Board</option>
+
+                        </select>
+
+
+                        <button
+                            class="primary-btn verify-button"
+                            onclick="verifyDocument()">
+
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Verify Document
+
+                        </button>
+
+
+                        <div id="result"></div>
+
+                    </div>
+
+
+                    <div class="verify-box">
+
+                        <h2>Secure Verification</h2>
+
+                        <p>
+                            Your verification process is simple and secure.
+                        </p>
+
+
+                        <div class="card">
+
+                            <div class="card-icon">1</div>
+
+                            <h3>Enter Details</h3>
+
+                            <p>
+                                Provide the document type and number.
+                            </p>
+
+                        </div>
+
+                        <br>
+
+
+                        <div class="card">
+
+                            <div class="card-icon">2</div>
+
+                            <h3>Authenticate</h3>
+
+                            <p>
+                                The document information is checked.
+                            </p>
+
+                        </div>
+
+                        <br>
+
+
+                        <div class="card">
+
+                            <div class="card-icon">3</div>
+
+                            <h3>Get Result</h3>
+
+                            <p>
+                                Receive the verification result instantly.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SERVICES -->
+
+            <section id="services" class="page">
+
+                <div class="heading">
+
+                    <small>ONE GOVERNMENT. ONE PLATFORM.</small>
+
+                    <h1>Government Services</h1>
+
+                    <p>
+                        Discover useful government services without jumping between portals.
+                    </p>
+
+                </div>
+
+
+                <div class="service-search">
+
+                    <i class="fa-solid fa-search"></i>
+
+                    <input
+                        id="serviceSearch"
+                        placeholder="Search government services..."
+                        onkeyup="searchServices()"
+                    >
+
+                </div>
+
+
+                <div class="service-filters">
+
+                    <button
+                        class="filter active"
+                        onclick="filterServices('all',this)">
+                        All
+                    </button>
+
+                    <button
+                        class="filter"
+                        onclick="filterServices('identity',this)">
+                        Identity
+                    </button>
+
+                    <button
+                        class="filter"
+                        onclick="filterServices('education',this)">
+                        Education
+                    </button>
+
+                    <button
+                        class="filter"
+                        onclick="filterServices('transport',this)">
+                        Transport
+                    </button>
+
+                    <button
+                        class="filter"
+                        onclick="filterServices('health',this)">
+                        Health
+                    </button>
+
+                </div>
+
+
+                <div class="service-grid">
+
+                    <div
+                        class="service-card"
+                        data-category="identity"
+                        data-name="Aadhaar">
+
+                        <i class="fa-solid fa-id-card"></i>
+
+                        <h3>Aadhaar Services</h3>
+
+                        <p>
+                            Manage and access Aadhaar related services.
+                        </p>
+
+                        <button onclick="openService('Aadhaar Services')">
+                            Open Service →
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="service-card"
+                        data-category="identity"
+                        data-name="PAN">
+
+                        <i class="fa-solid fa-credit-card"></i>
+
+                        <h3>PAN Services</h3>
+
+                        <p>
+                            Access your PAN related government services.
+                        </p>
+
+                        <button onclick="openService('PAN Services')">
+                            Open Service →
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="service-card"
+                        data-category="transport"
+                        data-name="Driving Licence">
+
+                        <i class="fa-solid fa-car"></i>
+
+                        <h3>Driving Licence</h3>
+
+                        <p>
+                            Access driving licence related services.
+                        </p>
+
+                        <button onclick="openService('Driving Licence')">
+                            Open Service →
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="service-card"
+                        data-category="education"
+                        data-name="Education">
+
+                        <i class="fa-solid fa-graduation-cap"></i>
+
+                        <h3>Education Documents</h3>
+
+                        <p>
+                            Access digital marksheets and certificates.
+                        </p>
+
+                        <button onclick="openService('Education Documents')">
+                            Open Service →
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="service-card"
+                        data-category="health"
+                        data-name="Health">
+
+                        <i class="fa-solid fa-heart-pulse"></i>
+
+                        <h3>Health Services</h3>
+
+                        <p>
+                            Access available digital health records.
+                        </p>
+
+                        <button onclick="openService('Health Services')">
+                            Open Service →
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="service-card"
+                        data-category="transport"
+                        data-name="Vehicle">
+
+                        <i class="fa-solid fa-motorcycle"></i>
+
+                        <h3>Vehicle Services</h3>
+
+                        <p>
+                            Manage digital vehicle related documents.
+                        </p>
+
+                        <button onclick="openService('Vehicle Services')">
+                            Open Service →
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SUPPORT -->
+
+            <section id="support" class="page">
+
+                <div class="heading">
+
+                    <small>HELP CENTER</small>
+
+                    <h1>Help & Support</h1>
+
+                    <p>
+                        We're here to help you navigate your digital government services.
+                    </p>
+
+                </div>
+
+
+                <div class="support-grid">
+
+                    <div class="support-card">
+
+                        <i class="fa-solid fa-circle-question"></i>
+
+                        <h3>Frequently Asked Questions</h3>
+
+                        <p>
+                            Find quick answers to common questions.
+                        </p>
+
+                        <button onclick="showToast('FAQ section opened')">
+                            Browse FAQs →
+                        </button>
+
+                    </div>
+
+
+                    <div class="support-card">
+
+                        <i class="fa-solid fa-user-shield"></i>
+
+                        <h3>Account & Security</h3>
+
+                        <p>
+                            Get help with login, OTP and account security.
+                        </p>
+
+                        <button onclick="showToast('Security help opened')">
+                            Get Help →
+                        </button>
+
+                    </div>
+
+
+                    <div class="support-card">
+
+                        <i class="fa-solid fa-file-circle-question"></i>
+
+                        <h3>Document Issues</h3>
+
+                        <p>
+                            Problems fetching or verifying documents?
+                        </p>
+
+                        <button onclick="showToast('Document support opened')">
+                            Fix Issue →
+                        </button>
+
+                    </div>
+
+
+                    <div class="support-card">
+
+                        <i class="fa-solid fa-headset"></i>
+
+                        <h3>Contact Support</h3>
+
+                        <p>
+                            Need additional assistance? Contact our team.
+                        </p>
+
+                        <button onclick="showToast('Support request created')">
+                            Contact Us →
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq">
+
+                    <h2>Popular Questions</h2>
+
+
+                    <div class="faq-item">
+
+                        <button
+                            class="faq-question"
+                            onclick="toggleFAQ(this)">
+
+                            <span>
+                                How can I verify a document?
+                            </span>
+
+                            <i class="fa-solid fa-chevron-down"></i>
+
+                        </button>
+
+                        <div class="faq-answer">
+                            Go to Verify Document, select your document,
+                            enter the required details and click Verify Document.
+                        </div>
+
+                    </div>
+
+
+                    <div class="faq-item">
+
+                        <button
+                            class="faq-question"
+                            onclick="toggleFAQ(this)">
+
+                            <span>
+                                Are my documents secure?
+                            </span>
+
+                            <i class="fa-solid fa-chevron-down"></i>
+
+                        </button>
+
+                        <div class="faq-answer">
+                            DigiVault is designed around secure digital document
+                            management and verification.
+                        </div>
+
+                    </div>
+
+
+                    <div class="faq-item">
+
+                        <button
+                            class="faq-question"
+                            onclick="toggleFAQ(this)">
+
+                            <span>
+                                How can I download a document?
+                            </span>
+
+                            <i class="fa-solid fa-chevron-down"></i>
+
+                        </button>
+
+                        <div class="faq-answer">
+                            Open My Documents and select the document you want
+                            to download.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- AI ASSISTANT -->
+
+    <button
+        class="ai-button"
+        onclick="toggleAI()"
+        title="DigiVault Assistant">
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+    </button>
+
+
+    <div id="aiPanel" class="ai-panel">
+
+        <h3>✨ DigiVault Assistant</h3>
+
+        <p>Hi! What do you need help with?</p>
+
+        <button
+            class="ai-option"
+            onclick="aiReply('You can verify documents from the Verify Document section.')">
+
+            🛡️ How do I verify a document?
+
+        </button>
+
+        <button
+            class="ai-option"
+            onclick="aiReply('Open My Documents to access your digital records.')">
+
+            📁 Where are my documents?
+
+        </button>
+
+        <button
+            class="ai-option"
+            onclick="aiReply('Use Government Services to discover useful services.')">
+
+            🏛️ Find government services
+
+        </button>
+
+        <button
+            class="ai-option"
+            onclick="aiReply('Your current security score is 92%.')">
+
+            🔐 Check my security
+
+        </button>
+
+    </div>
+
+
+    <!-- TOAST -->
+
+    <div id="toast" class="toast"></div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        /* =========================
+           PAGE SWITCH
+        ========================= */
+
+        function showPage(pageId, button) {
+
+            const pages =
+                document.querySelectorAll(".page");
+
+            pages.forEach(page => {
+                page.classList.remove("active");
+            });
+
+            const page =
+                document.getElementById(pageId);
+
+            if (page) {
+                page.classList.add("active");
+            }
+
+            const buttons =
+                document.querySelectorAll(".nav-btn");
+
+            buttons.forEach(btn => {
+                btn.classList.remove("active");
+            });
+
+            if (button) {
+                button.classList.add("active");
+            }
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+
+        /* =========================
+           DARK MODE
+        ========================= */
+
+        function toggleTheme() {
+
+            document.body.classList.toggle("dark");
+
+            const icon =
+                document.getElementById("themeIcon");
+
+            if (document.body.classList.contains("dark")) {
+
+                icon.className = "fa-solid fa-sun";
+
+                localStorage.setItem("theme", "dark");
+
+                showToast("🌙 Dark mode enabled");
+
+            } else {
+
+                icon.className = "fa-solid fa-moon";
+
+                localStorage.setItem("theme", "light");
+
+                showToast("☀️ Light mode enabled");
+            }
+        }
+
+
+        /* LOAD SAVED THEME */
+
+        if (localStorage.getItem("theme") === "dark") {
+
+            document.body.classList.add("dark");
+
+            document.getElementById("themeIcon").className =
+                "fa-solid fa-sun";
+        }
+
+
+        /* =========================
+           VERIFY DOCUMENT
+        ========================= */
+
+        function verifyDocument() {
+
+            const type =
+                document.getElementById("documentType").value;
+
+            const number =
+                document.getElementById("documentNumber").value.trim();
+
+            const issuer =
+                document.getElementById("issuer").value;
+
+            const result =
+                document.getElementById("result");
+
+
+            if (
+                type === "" ||
+                number === "" ||
+                issuer === ""
+            ) {
+
+                result.className = "error";
+
+                result.innerHTML =
+                    "⚠️ Please fill all required fields.";
+
+                return;
+            }
+
+
+            result.className = "success";
+
+            result.innerHTML =
+                "✓ Document verified successfully! " +
+                type +
+                " issued by " +
+                issuer +
+                " passed the demo verification check.";
+        }
+
+
+        /* =========================
+           SERVICE SEARCH
+        ========================= */
+
+        function searchServices() {
+
+            const value =
+                document
+                    .getElementById("serviceSearch")
+                    .value
+                    .toLowerCase();
+
+            const cards =
+                document.querySelectorAll(".service-card");
+
+            cards.forEach(card => {
+
+                const name =
+                    card.dataset.name.toLowerCase();
+
+                card.style.display =
+                    name.includes(value)
+                        ? "block"
+                        : "none";
+            });
+        }
+
+
+        /* =========================
+           SERVICE FILTER
+        ========================= */
+
+        function filterServices(category, button) {
+
+            const cards =
+                document.querySelectorAll(".service-card");
+
+            document
+                .querySelectorAll(".filter")
+                .forEach(btn => {
+                    btn.classList.remove("active");
+                });
+
+            button.classList.add("active");
+
+
+            cards.forEach(card => {
+
+                if (
+                    category === "all" ||
+                    card.dataset.category === category
+                ) {
+
+                    card.style.display = "block";
+
+                } else {
+
+                    card.style.display = "none";
+                }
+            });
+        }
+
+
+        /* =========================
+           OPEN SERVICE
+        ========================= */
+
+        function openService(name) {
+
+            showToast(
+                "🚀 " +
+                name +
+                " opened successfully."
+            );
+        }
+
+
+        /* =========================
+           FAQ
+        ========================= */
+
+        function toggleFAQ(button) {
+
+            button
+                .parentElement
+                .classList
+                .toggle("open");
+        }
+
+
+        /* =========================
+           TOAST
+        ========================= */
+
+        let toastTimer;
+
+        function showToast(message) {
+
+            const toast =
+                document.getElementById("toast");
+
+            toast.innerText = message;
+
+            toast.classList.add("show");
+
+            clearTimeout(toastTimer);
+
+            toastTimer =
+                setTimeout(() => {
+
+                    toast.classList.remove("show");
+
+                }, 2500);
+        }
+
+
+        /* =========================
+           AI ASSISTANT
+        ========================= */
+
+        function toggleAI() {
+
+            document
+                .getElementById("aiPanel")
+                .classList
+                .toggle("show");
+        }
+
+
+        function aiReply(message) {
+
+            showToast("✨ " + message);
+
+            document
+                .getElementById("aiPanel")
+                .classList
+                .remove("show");
+        }
+
+
+        /* =========================
+           WELCOME MESSAGE
+        ========================= */
+
+        setTimeout(() => {
+
+            showToast(
+                "👋 Welcome to your DigiVault dashboard!"
+            );
+
+        }, 1000);
+
+    </script>
+
+</body>
+</html>
